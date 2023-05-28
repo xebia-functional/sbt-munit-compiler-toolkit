@@ -1,6 +1,5 @@
-# sbt-sbt-munit-compiler-toolkit
-
-SBT plugin providing sbt settings ensuring compiler plugins and compiler source code are available in munit tests.
+# sbt-munit-compiler-toolkit
+SBT plugin providing sbt settings ensuring compiler plugins and compiler source code are available in tests.
 
 ## Usage
 
