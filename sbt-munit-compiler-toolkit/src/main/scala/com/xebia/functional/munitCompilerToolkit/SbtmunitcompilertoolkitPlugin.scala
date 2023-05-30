@@ -20,10 +20,26 @@ import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
 
+/** sbt plugin object for the SbtMunitCompilerToolkitPlugin.
+  *
+  * This plugin configures the necessary settings and dependencies for using the
+  * MUnit Compiler Toolkit. It adds the required library dependencies, sets up
+  * the necessary Java options to pass the classpaths, and configures other
+  * project settings. The plugin extends the AutoPlugin trait, which allows it
+  * to be automatically enabled in an sbt project.
+  *
+  * This plugin must be explicitly enabled with
+  * `enablePlugins(SbtMunitCompilerToolkitPlugin)`.
+  *
+  * @see
+  *   [[https://www.scala-sbt.org/1.x/docs/Plugins.html Sbt Plugins]]
+  * @see
+  *   [[https://github.com/xebia-functional/munit-compiler-toolkit munit-compiler-toolkit]]
+  */
 object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
-  override def requires = JvmPlugin
+  override def requires = empty
 
   private val munitCompilerToolkitTestkitVersion = "0.1.4"
 
@@ -31,6 +47,14 @@ object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
 
   import autoImport._
 
+  /** This sets the necessary java properties to pass a compiler plugin to test.
+    *
+    * The key thing to note is that `Test / fork` must be true for the requierd
+    * additional Java system properties to be passed at runtime.
+    *
+    * @return
+    *   The settings to be automatically added to the project.
+    */
   override lazy val projectSettings = Seq(
     resolvers += Resolver.sonatypeRepo("public"),
     libraryDependencies += "com.xebia" %% "munit-compiler-toolkit-testkit" % munitCompilerToolkitTestkitVersion,
