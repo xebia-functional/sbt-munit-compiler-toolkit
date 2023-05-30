@@ -34,6 +34,7 @@ lazy val root = project
   .settings(commonSettings)
   .settings(
     name := "sbt-munit-compiler-toolkit-root",
+    version := "0.1.4",
     publish / skip := true
   )
   .aggregate(`sbt-munit-compiler-toolkit`, `documentation`)
