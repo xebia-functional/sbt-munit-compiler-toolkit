@@ -27,8 +27,7 @@ object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
 
   private val munitCompilerToolkitTestkitVersion = "0.1.4"
 
-  object autoImport {
-  }
+  object autoImport {}
 
   import autoImport._
 

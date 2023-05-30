@@ -25,5 +25,3 @@ addSbtPlugin(sbtMdoc)
 addSbtPlugin(sbtGithub)
 addSbtPlugin(sbtGithubMdoc)
 addSbtPlugin(sbtScalafmt)
-
-

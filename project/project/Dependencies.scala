@@ -30,12 +30,14 @@ object Dependencies {
   }
 
   object Compile {
-    val `munit-compiler-toolkit-testkit` = "com.xebia" %% "munit-compiler-toolkit-testkit" % "0.1.4"
+    val `munit-compiler-toolkit-testkit` =
+      "com.xebia" %% "munit-compiler-toolkit-testkit" % "0.1.4"
   }
 
   object SbtPlugins {
     val sbtCiRelease = "com.geirsson" % "sbt-ci-release" % Versions.sbtCiRelease
-    val sbtGithubActions = "com.codecommit" % "sbt-github-actions" % Versions.sbtGithubActions
+    val sbtGithubActions =
+      "com.codecommit" % "sbt-github-actions" % Versions.sbtGithubActions
     val sbtDependencyUpdates =
       "org.jmotor.sbt" % "sbt-dependency-updates" % Versions.sbtDependencyUpdates
     val sbtHeader = "de.heikoseeberger" % "sbt-header" % Versions.sbtHeader
@@ -51,6 +53,17 @@ object Dependencies {
   }
 
   lazy val dependencies =
-    Seq(Compile.`munit-compiler-toolkit-testkit`, SbtPlugins.sbtCiRelease, SbtPlugins.sbtGithubActions, SbtPlugins.sbtDependencyUpdates, SbtPlugins.sbtHeader, SbtPlugins.sbtGithub, SbtPlugins.sbtGithubMdoc, SbtPlugins.sbtMdoc, SbtPlugins.sbtScalafmt, Test.munit)
+    Seq(
+      Compile.`munit-compiler-toolkit-testkit`,
+      SbtPlugins.sbtCiRelease,
+      SbtPlugins.sbtGithubActions,
+      SbtPlugins.sbtDependencyUpdates,
+      SbtPlugins.sbtHeader,
+      SbtPlugins.sbtGithub,
+      SbtPlugins.sbtGithubMdoc,
+      SbtPlugins.sbtMdoc,
+      SbtPlugins.sbtScalafmt,
+      Test.munit
+    )
 
 }
