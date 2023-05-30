@@ -20,21 +20,46 @@ import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
 
-object SbtmunitcompilertoolkitPlugin extends AutoPlugin {
+object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
 
   override def trigger = allRequirements
   override def requires = JvmPlugin
 
+  private val munitCompilerToolkitTestkitVersion = "0.1.4"
+
   object autoImport {
-    val exampleSetting = settingKey[String]("A setting that is automatically imported to the build")
-    val exampleTask = taskKey[String]("A task that is automatically imported to the build")
   }
 
   import autoImport._
 
   override lazy val projectSettings = Seq(
-    exampleSetting := "just an example",
-    exampleTask := "computed from example setting: " + exampleSetting.value
+    resolvers += Resolver.sonatypeRepo("public"),
+    libraryDependencies += "com.xebia" %% "munit-compiler-toolkit-testkit" % munitCompilerToolkitTestkitVersion,
+    libraryDependencies ++= List(
+      "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
+    ),
+    exportJars := true,
+    autoAPIMappings := true,
+    publish / skip := true,
+    Test / fork := true,
+    Test / javaOptions += {
+      val `scala-compiler-classpath` =
+        (Compile / dependencyClasspath).value.files
+          .map(_.toPath().toAbsolutePath().toString())
+          .mkString(":")
+      s"-Dscala-compiler-classpath=${`scala-compiler-classpath`}"
+    },
+    Test / javaOptions += {
+      s"""-Dcompiler-scalacOptions=\"${scalacOptions.value.mkString(" ")}\""""
+    },
+    Test / javaOptions += Def.taskDyn {
+      Def.task {
+        val _ = (Compile / Keys.`package`).value
+        val `scala-compiler-options` =
+          s"${(Compile / packageBin).value}"
+        s"""-Dscala-compiler-plugin=${`scala-compiler-options`}"""
+      }
+    }.value
   )
 
   override lazy val buildSettings = Seq()
