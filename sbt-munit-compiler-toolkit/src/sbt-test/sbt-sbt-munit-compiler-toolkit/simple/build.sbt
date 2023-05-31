@@ -8,7 +8,7 @@ lazy val pluginLib = project
   .in(file("./pluginLib"))
   .settings(name := "example-plugin-lib")
 
-lazy val compilerPlugin = project.in(file("compilerPlugin"))
+lazy val compilerPlugin = project.in(file("./plugin"))
   .settings(
     name := "example-plugin"
   )

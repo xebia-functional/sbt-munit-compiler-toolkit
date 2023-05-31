@@ -1,1 +1,5 @@
+> compile
+$ exists ./plugin/target/scala-3.2.2/example-plugin_3-0.1.0-SNAPSHOT.jar
 > compilerPlugin / Test / test
+> compilerPlugin / IntegrationTest / test
+
