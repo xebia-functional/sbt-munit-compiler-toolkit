@@ -16,7 +16,7 @@
 
 import Dependencies.Compile._
 import Dependencies.Test._
-ThisBuild / version := "0.1.5-SNAPSHOT"
+ThisBuild / version := "0.1.5"
 
 addCommandAlias(
   "ci-test",
