@@ -16,10 +16,11 @@
 
 import Dependencies.Compile._
 import Dependencies.Test._
+ThisBuild / version := "0.1.5-SNAPSHOT"
 
 addCommandAlias(
   "ci-test",
-  "scalafmtCheckAll; scalafmtSbtCheck; github; documentation / mdoc; root / scripted"
+  "scalafmtCheckAll; scalafmtSbtCheck; github; documentation / mdoc; scripted"
 )
 addCommandAlias("ci-docs", "github; documentation / mdoc")
 addCommandAlias("ci-publish", "github; ci-release")
@@ -34,7 +35,6 @@ lazy val root = project
   .settings(commonSettings)
   .settings(
     name := "sbt-munit-compiler-toolkit-root",
-    version := "0.1.4",
     publish / skip := true
   )
   .aggregate(`sbt-munit-compiler-toolkit`, `documentation`)

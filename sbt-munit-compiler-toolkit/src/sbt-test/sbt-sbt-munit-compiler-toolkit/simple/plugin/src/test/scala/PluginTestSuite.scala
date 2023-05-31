@@ -1,7 +1,8 @@
 package example
 
 import com.xebia.functional.munitCompilerToolkit.CompilerSuite
-
+import dotty.tools.dotc.core.Contexts.Context
+import scala.util.Properties
 
 class PluginTestSuite extends CompilerSuite:
 
@@ -12,7 +13,7 @@ class PluginTestSuite extends CompilerSuite:
        | val x = example("test")
        |}
        |""".stripMargin,
-    Option("pickelQuotes")
+    Option("pickleQuotes")
   ) { case (tree, given Context) =>
     assertEquals(
       cleanCompilerOutput(tree),
@@ -20,7 +21,7 @@ class PluginTestSuite extends CompilerSuite:
          |  final lazy module val Thing: Thing = new Thing()
          |  @SourceFile("compileFromStringscala") final module class Thing() extends Object() { this: Thing.type =>
          |    private def writeReplace(): AnyRef = new scala.runtime.ModuleSerializationProxy(classOf[Thing.type])
-         |    val x: String = new com.xebia.functional.munitCompilerToolkit.LoggingInterceptor[String](example("test")).apply("example")(["test" : Any]*)
+         |    val x: String = new example.LoggingInterceptor[String](example("test")).apply("example")(["test" : Any]*)
          |  }
          |  final lazy module val compileFromStringpackage:
          |    compileFromStringpackage

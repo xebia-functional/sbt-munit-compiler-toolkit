@@ -32,7 +32,7 @@ import sbt.plugins.JvmPlugin
   * `enablePlugins(SbtMunitCompilerToolkitPlugin)`.
   *
   * @see
-  *   [[https://www.scala-sbt.org/1.x/docs/Plugins.html Sbt Plugins]]
+  *   H * [[https://www.scala-sbt.org/1.x/docs/Plugins.html Sbt Plugins]]
   * @see
   *   [[https://github.com/xebia-functional/munit-compiler-toolkit munit-compiler-toolkit]]
   */
@@ -41,29 +41,33 @@ object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
   override def trigger = allRequirements
   override def requires = empty
 
-  private val munitCompilerToolkitTestkitVersion = "0.1.4"
+  private val munitCompilerToolkitTestkitVersion = "0.3.0"
+  private val munitSnapVersion = "0.1.6"
 
   object autoImport {}
 
   import autoImport._
 
-  /** This sets the necessary java properties to pass a compiler plugin to test.
+  override def projectConfigurations: Seq[Configuration] = Seq(IntegrationTest)
+
+  /** This sets the necessary java properties to pass a compiler plugin to
+    * `test` and `it`.
     *
-    * The key thing to note is that `Test / fork` must be true for the requierd
+    * The key thing to note is that `fork` must be true for the required
     * additional Java system properties to be passed at runtime.
     *
     * @return
     *   The settings to be automatically added to the project.
     */
-  override lazy val projectSettings = Seq(
-    resolvers += Resolver.sonatypeRepo("public"),
-    libraryDependencies += "com.xebia" %% "munit-compiler-toolkit-testkit" % munitCompilerToolkitTestkitVersion,
+  override lazy val projectSettings = Defaults.itSettings ++ Seq(
+    resolvers ++= Resolver.sonatypeOssRepos("public"),
+    libraryDependencies += "com.xebia" %% "munit-compiler-toolkit" % munitCompilerToolkitTestkitVersion % s"${Test.name},${IntegrationTest.name}",
+    libraryDependencies += "com.xebia" %% "munit-snap" % munitSnapVersion % s"${Test.name},${IntegrationTest.name}",
     libraryDependencies ++= List(
       "org.scala-lang" %% "scala3-compiler" % scalaVersion.value
     ),
     exportJars := true,
     autoAPIMappings := true,
-    publish / skip := true,
     Test / fork := true,
     Test / javaOptions += {
       val `scala-compiler-classpath` =
@@ -76,6 +80,25 @@ object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
       s"""-Dcompiler-scalacOptions=\"${scalacOptions.value.mkString(" ")}\""""
     },
     Test / javaOptions += Def.taskDyn {
+      Def.task {
+        val _ = (Compile / Keys.`package`).value
+        val `scala-compiler-options` =
+          s"${(Compile / packageBin).value}"
+        s"""-Dscala-compiler-plugin=${`scala-compiler-options`}"""
+      }
+    }.value,
+    IntegrationTest / fork := true,
+    IntegrationTest / javaOptions += {
+      val `scala-compiler-classpath` =
+        (Compile / dependencyClasspath).value.files
+          .map(_.toPath().toAbsolutePath().toString())
+          .mkString(":")
+      s"-Dscala-compiler-classpath=${`scala-compiler-classpath`}"
+    },
+    IntegrationTest / javaOptions += {
+      s"""-Dcompiler-scalacOptions=\"${scalacOptions.value.mkString(" ")}\""""
+    },
+    IntegrationTest / javaOptions += Def.taskDyn {
       Def.task {
         val _ = (Compile / Keys.`package`).value
         val `scala-compiler-options` =
