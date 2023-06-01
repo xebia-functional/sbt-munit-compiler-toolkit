@@ -14,7 +14,7 @@ class ExampleCompilerSnapshotSuite extends SnapshotSuite, CompilerSuite:
                     |  val x = example("test")
                     |}
                     |""".stripMargin
-    compileToStringTreeAndTreeSourcessAndStringContext(source, Option("pickleQuotes"))
+    compileToStringTreeAndStringContext(source, Option("pickleQuotes"))
   }
 
 end ExampleCompilerSnapshotSuite

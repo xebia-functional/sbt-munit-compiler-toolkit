@@ -41,7 +41,7 @@ object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
   override def trigger = allRequirements
   override def requires = empty
 
-  private val munitCompilerToolkitTestkitVersion = "0.3.0"
+  private val munitCompilerToolkitTestkitVersion = "0.4.0"
   private val munitSnapVersion = "0.1.6"
 
   object autoImport {}
@@ -60,7 +60,7 @@ object SbtMunitCompilerToolkitPlugin extends AutoPlugin {
     *   The settings to be automatically added to the project.
     */
   override lazy val projectSettings = Defaults.itSettings ++ Seq(
-    resolvers ++= Resolver.sonatypeOssRepos("public"),
+    resolvers += Resolver.sonatypeRepo("public"),
     libraryDependencies += "com.xebia" %% "munit-compiler-toolkit" % munitCompilerToolkitTestkitVersion % s"${Test.name},${IntegrationTest.name}",
     libraryDependencies += "com.xebia" %% "munit-snap" % munitSnapVersion % s"${Test.name},${IntegrationTest.name}",
     libraryDependencies ++= List(
